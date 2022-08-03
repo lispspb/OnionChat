@@ -1,7 +1,8 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog, QLabel, QToolBar, QStatusBar, QAction, QMenuBar, QMenu, QVBoxLayout
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QIcon, QFont
 
+import config
 from config import *
 from gui.settings import SettingsDialog
 
@@ -13,6 +14,7 @@ class AboutDialog(QDialog):
                             Qt.WindowCloseButtonHint |
                             Qt.WindowTitleHint)
         self.setWindowTitle('About')
+        self.setWindowIcon(QIcon(config.Gui.ICON_ABOUT))
         self.setFixedSize(Gui.about_dialog_size)
 
         self.layout = QVBoxLayout()

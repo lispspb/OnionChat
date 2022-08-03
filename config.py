@@ -163,6 +163,7 @@ class Gui:
     BACKGROUND_CHAT_LIST = os.path.join(App.BACKGROUND_DIR, 'chat_list.png')
 
     ICON_APP = os.path.join(App.ICON_DIR, 'app.png')
+    ICON_ABOUT = os.path.join(App.ICON_DIR, 'about.png')
     ICON_SETTINGS = os.path.join(App.ICON_DIR, 'settings.png')
 
     statusbar_welcome_msec = 3000
