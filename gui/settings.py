@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QDialog, QTabWidget, QVBoxLayout, QHBoxLayout,  QFor
     QPushButton, QFileDialog, QComboBox, QCheckBox, QGroupBox, QTabBar
 from PyQt5.QtGui import QIcon, QMouseEvent
 
-from config import *
+import config
 import core.contacts
 import core.utils
 
@@ -13,36 +13,37 @@ class TabNetwork(QTabBar):
     def __init__(self, parent):
         super().__init__(parent)
         self.layout = QVBoxLayout()
+
         tor_portable_label = QLabel('Tor portable')
         tor_portable_layout = QFormLayout()
-        tor_portable_address = QLineEdit(config_defaults['tor_portable']['address'])
+        tor_portable_address = QLineEdit(config.ini['tor_portable']['address'])
         tor_portable_layout.addRow('Tor address:', tor_portable_address)
-        tor_portable_socks_port = QLineEdit(str(config_defaults['tor_portable']['socks_port']))
+        tor_portable_socks_port = QLineEdit(str(config.ini['tor_portable']['socks_port']))
         tor_portable_layout.addRow('Tor SOCKS port:', tor_portable_socks_port)
-        tor_portable_control_port = QLineEdit(str(config_defaults['tor_portable']['control_port']))
+        tor_portable_control_port = QLineEdit(str(config.ini['tor_portable']['control_port']))
         tor_portable_layout.addRow('Tor control port:', tor_portable_control_port)
         self.layout.addWidget(tor_portable_label)
         self.layout.addLayout(tor_portable_layout)
 
         tor_label = QLabel('Tor')
         tor_layout = QFormLayout()
-        tor_address = QLineEdit(config_defaults['tor']['address'])
+        tor_address = QLineEdit(config.ini['tor']['address'])
         tor_layout.addRow('Tor address:', tor_address)
-        tor_socks_port = QLineEdit(str(config_defaults['tor']['socks_port']))
+        tor_socks_port = QLineEdit(str(config.ini['tor']['socks_port']))
         tor_layout.addRow('Tor SOCKS port:', tor_socks_port)
-        tor_control_port = QLineEdit(str(config_defaults['tor']['control_port']))
+        tor_control_port = QLineEdit(str(config.ini['tor']['control_port']))
         tor_layout.addRow('Tor control port:', tor_control_port)
         self.layout.addWidget(tor_label)
         self.layout.addLayout(tor_layout)
 
         client_label = QLabel('Client')
         client_layout = QFormLayout()
-        client_hostname = QLineEdit(core.contacts.shorten_hostname(config_defaults['client']['hostname']))
+        client_hostname = QLineEdit(core.contacts.shorten_hostname(config.ini['client']['hostname']))
         client_hostname.setReadOnly(True)
         client_layout.addRow('Hostname:', client_hostname)
-        client_listen_interface = QLineEdit(config_defaults['client']['listen_interface'])
+        client_listen_interface = QLineEdit(config.ini['client']['listen_interface'])
         client_layout.addRow('Listen interface:', client_listen_interface)
-        client_listen_port = QLineEdit(str(config_defaults['client']['listen_port']))
+        client_listen_port = QLineEdit(str(config.ini['client']['listen_port']))
         client_layout.addRow('Listen port:', client_listen_port)
         self.layout.addWidget(client_label)
         self.layout.addLayout(client_layout)
@@ -129,9 +130,9 @@ class SettingsDialog(QDialog):
         self.setWindowFlags(Qt.WindowType.Window |
                             Qt.WindowType.WindowCloseButtonHint |
                             Qt.WindowType.WindowTitleHint)
-        self.setFixedSize(Gui.settings_dialog_size)
+        self.setFixedSize(config.Gui.settings_dialog_size)
         self.setWindowTitle('Settings')
-        self.setWindowIcon(QIcon(Gui.ICON_SETTINGS))
+        self.setWindowIcon(QIcon(config.Gui.ICON_SETTINGS))
         self.layout = QVBoxLayout()
 
         self.tab_widget = QTabWidget(self)

@@ -1,7 +1,12 @@
 import pathlib
 import os.path
 import sys
+import json
 from PyQt5.QtCore import QSize
+
+
+global ini
+ini: dict = {}
 
 
 STATUS_OFFLINE = 0
@@ -65,6 +70,67 @@ config_defaults = {
 }
 
 SCRIPT_DIR = pathlib.Path(sys.argv[0]).parent.resolve()
+
+
+def write_default_json(filename: str = 'onionchat.json.ini') -> bool:
+    try:
+        ini_file = open(filename, 'w')
+        ini_file.write(json.dumps(config_defaults, indent=4))
+        ini_file.close()
+    except IOError as err:
+        print(f'Could not write default ini to {filename}: {err}')
+        return False
+    print(f"Successfully written JSON ini to '{filename}'")
+    return True
+
+
+def load_from_json(filename: str = 'onionchat.json.ini') -> bool:
+    global ini
+    try:
+        ini_file = open(filename, 'r')
+        config_json = json.loads(ini_file.read())
+        ini_file.close()
+    except FileNotFoundError:
+        print(f"Could not find JSON ini file '{filename}'.")
+        print('Loading ini defaults.')
+        ini = config_defaults
+        print(f"Saving JSON ini defaults to '{filename}' so we could use it next time.")
+        write_default_json()
+        return False
+    except IOError as err:
+        print(f"Could not read JSON ini from '{filename}': {err}")
+        print(f'Loading ini defaults.')
+        ini = config_defaults
+        return False
+    except json.JSONDecodeError as err:
+        print(f"Could not decode ini JSON from '{filename}': {err}")
+        print(f'Loading ini defaults.')
+        ini = config_defaults
+        return False
+    print(f"Successfully read JSON ini from '{filename}'. Now parsing...")
+
+    sections = config_defaults.keys()
+    # Check section existence
+    # Load the entire section from config_defaults if not found
+    for section in sections:
+        config_json.get(section)
+        section_json = config_json.get(section)
+        if section_json is None:
+            print(f"Could not find section '{section}' in JSON ini '{filename}'.")
+            print('Loading section from ini defaults.')
+            ini[section] = config_defaults[section]
+            continue
+
+        # Section: check each of its keys to exist
+        # Load key from config_defaults if not found
+        for key in config_defaults[section].keys():
+            key_json = section_json.get(key)
+            if key_json is None:
+                print(f"Could not find '{key}', section '{section}' in JSON ini '{filename}'.")
+                print('Loading value from ini defaults.')
+        ini[section] = config_defaults[section]
+
+    return True
 
 
 class App:

@@ -6,6 +6,7 @@ import gui
 
 
 def main():
+    config.load_from_json()
     app = QApplication(sys.argv)
     window = gui.window.MainWindow()
     window.show()
