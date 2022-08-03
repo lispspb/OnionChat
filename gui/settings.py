@@ -58,19 +58,25 @@ class TabInterface(QTabBar):
 
         gui_layout = QFormLayout()
         gui_language = QComboBox()
-        gui_language.addItems(['English', 'Русский'])
+        gui_language.addItems(['de', 'fr', 'en', 'pt', 'ru'])
+        gui_language.setCurrentText(config.ini['gui']['language'])
         gui_layout.addRow('GUI language:', gui_language)
 
         gui_open_main_window_hidden = QCheckBox('Open main window hidden')
+        gui_open_main_window_hidden.setChecked(config.ini['gui']['open_main_window_hidden'])
         gui_layout.addWidget(gui_open_main_window_hidden)
         gui_open_chat_window_hidden = QCheckBox('Open chat window hidden')
+        gui_open_chat_window_hidden.setChecked(config.ini['gui']['open_chat_window_hidden'])
         gui_layout.addWidget(gui_open_chat_window_hidden)
         gui_notification_popup = QCheckBox('Notification popup')
+        gui_notification_popup.setChecked(config.ini['gui']['notification_popup'])
         gui_layout.addWidget(gui_notification_popup)
         gui_notification_method = QComboBox()
-        gui_notification_method.addItems(['First method', 'Second method'])
+        gui_notification_method.addItems(['generic', 'other'])
+        gui_notification_method.setCurrentText(config.ini['gui']['notification_method'])
         gui_layout.addRow('Notification method:', gui_notification_method)
         gui_flash_window = QCheckBox('GUI flash window')
+        gui_flash_window.setChecked(config.ini['gui']['notification_flash_window'])
         gui_layout.addWidget(gui_flash_window)
 
         self.layout.addLayout(gui_layout)
@@ -84,6 +90,7 @@ class TabMiscellaneous(QTabBar):
         self.layout = QVBoxLayout()
 
         temp_data_dir_checkbox = QCheckBox('Temp files in data dir')
+        temp_data_dir_checkbox.setChecked(config.ini['files']['temp_files_data_dir'])
         self.layout.addWidget(temp_data_dir_checkbox)
 
         temp_dir_input = QLineEdit()

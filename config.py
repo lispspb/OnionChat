@@ -5,10 +5,6 @@ import json
 from PyQt5.QtCore import QSize
 
 
-global ini
-ini: dict = {}
-
-
 STATUS_OFFLINE = 0
 STATUS_HANDSHAKE = 1
 STATUS_ONLINE = 2
@@ -16,6 +12,12 @@ STATUS_AWAY = 3
 STATUS_XA = 4
 STATUS_ALL = 5
 
+
+SCRIPT_DIR = pathlib.Path(sys.argv[0]).parent.resolve()
+
+
+global ini
+ini: dict = {}
 
 config_defaults = {
     'tor': {
@@ -43,18 +45,19 @@ config_defaults = {
     },
     'gui': {
         'language': 'en',
-        'notification_popup': 1,
+        'open_main_window_hidden': False,
+        'open_chat_window_hidden': False,
+        'notification_popup': True,
         'notification_method': 'generic',
-        'notification_flash_window': 1,
-        'open_main_window_hidden': 0,
-        'open_chat_window_hidden': 0,
+        'notification_flash_window': True,
+
         'time_stamp_format': '(%H:%M:%S)',
         'color_time_stamp': '#808080',
         'color_nick_myself': '#0000c0',
         'color_nick_buddy': '#c00000',
         'color_text_background': '#ffffff',
         'color_text_foreground': '#000000',
-        'color_text_use_system_colors': 1,
+        'color_text_use_system_colors': True,
         'chat_font_name': 'Arial',
         'chat_font_size': 10,
         'chat_window_width': 400,
@@ -68,8 +71,6 @@ config_defaults = {
         'text': '',
     }
 }
-
-SCRIPT_DIR = pathlib.Path(sys.argv[0]).parent.resolve()
 
 
 def write_default_json(filename: str = 'onionchat.json.ini') -> bool:
