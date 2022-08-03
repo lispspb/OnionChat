@@ -95,10 +95,10 @@ class Gui:
     BACKGROUND_CHAT_LIST = os.path.join(App.BACKGROUND_DIR, 'chat_list.png')
 
     ICON_APP = os.path.join(App.ICON_DIR, 'app.png')
-    ICON_DIALOG = os.path.join(App.ICON_DIR, 'dialog.png')
-    ICON_GROUP = os.path.join(App.ICON_DIR, 'dialog2.png')
+    # ICON_DIALOG = os.path.join(App.ICON_DIR, 'dialog.png')
+    # ICON_GROUP = os.path.join(App.ICON_DIR, 'dialog2.png')
     ICON_SETTINGS = os.path.join(App.ICON_DIR, 'settings.png')
-    ICON_ABOUT = os.path.join(App.ICON_DIR, 'about.png')
+    # ICON_ABOUT = os.path.join(App.ICON_DIR, 'about.png')
 
     statusbar_welcome_msec = 3000
     statusbar_icon_size = QSize(20, 20)
