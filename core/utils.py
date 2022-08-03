@@ -39,4 +39,3 @@ def kill_process(pid):
         os.kill(pid, SIGTERM)
     except Exception:
         print(f'(1) could not kill process {pid}')
-        tb()

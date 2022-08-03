@@ -69,11 +69,12 @@ SCRIPT_DIR = pathlib.Path(sys.argv[0]).parent.resolve()
 
 class App:
     NAME = 'OnionChat'
-    VERSION_MAJOR = 22
-    VERSION_MINOR = 0
-    VERSION_STABLE = True
-    VERSION = f'{(VERSION_MAJOR + VERSION_MINOR / 10):.1f}'
-    TITLE = f'{NAME} v{VERSION} {"stable" if VERSION_STABLE else "unstable"}'
+    VERSION_MAJOR = 0
+    VERSION_MINOR = 1
+    VERSION_PATCH = 0
+    VERSION_STABLE = False
+    VERSION = f'{VERSION_MAJOR}.{VERSION_MINOR}.{VERSION_PATCH}-{"stable" if VERSION_STABLE else "unstable"}'
+    TITLE = f'{NAME} {VERSION}'
     DATA_DIR = pathlib.Path('data')
     BACKGROUND_DIR = pathlib.Path(DATA_DIR, 'background')
     HELP_DIR = pathlib.Path(DATA_DIR, 'help')
@@ -95,10 +96,7 @@ class Gui:
     BACKGROUND_CHAT_LIST = os.path.join(App.BACKGROUND_DIR, 'chat_list.png')
 
     ICON_APP = os.path.join(App.ICON_DIR, 'app.png')
-    # ICON_DIALOG = os.path.join(App.ICON_DIR, 'dialog.png')
-    # ICON_GROUP = os.path.join(App.ICON_DIR, 'dialog2.png')
     ICON_SETTINGS = os.path.join(App.ICON_DIR, 'settings.png')
-    # ICON_ABOUT = os.path.join(App.ICON_DIR, 'about.png')
 
     statusbar_welcome_msec = 3000
     statusbar_icon_size = QSize(20, 20)

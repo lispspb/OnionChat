@@ -1,9 +1,6 @@
-from PyQt5.QtCore import Qt, QTimer, QUrl
-from PyQt5.QtWidgets import QApplication, QWidget, QDialog, QGridLayout, QLabel, QToolBar, QStatusBar, QAction, \
-    QMenuBar, QMenu, QVBoxLayout, QTextBrowser
-from PyQt5.QtGui import QPixmap, QMouseEvent, QFont, QIcon
-import os.path
-from functools import partial
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QDialog, QLabel, QToolBar, QStatusBar, QAction, QMenuBar, QMenu, QVBoxLayout
+from PyQt5.QtGui import QFont
 
 from config import *
 from gui.settings import SettingsDialog
@@ -101,7 +98,6 @@ class Menubar(QMenuBar):
         self.help = QMenu('&Help')
         self.help_help = QAction('&Help')
         self.help_help.setShortcut('F1')
-        self.help_help.triggered.connect(self.help_triggered)
         self.help.addAction(self.help_help)
         self.help.addSeparator()
         self.help_bugreport = QAction('Submit a Bug Report...')
@@ -143,10 +139,6 @@ class Menubar(QMenuBar):
     @staticmethod
     def setting_triggered():
         SettingsDialog()
-
-    @staticmethod
-    def help_triggered():
-        HelpBrowser()
 
     @staticmethod
     def about_triggered():
