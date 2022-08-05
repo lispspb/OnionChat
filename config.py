@@ -4,6 +4,10 @@ import sys
 import json
 from PyQt5.QtCore import QSize
 
+ONIONCHAT_PORT = 11009  # Do NOT change this.
+DEAD_CONNECTION_TIMEOUT = 240
+
+SCRIPT_DIR = pathlib.Path(sys.argv[0]).parent.resolve()
 
 STATUS_OFFLINE = 0
 STATUS_HANDSHAKE = 1
@@ -11,9 +15,6 @@ STATUS_ONLINE = 2
 STATUS_AWAY = 3
 STATUS_XA = 4
 STATUS_ALL = 5
-
-
-SCRIPT_DIR = pathlib.Path(sys.argv[0]).parent.resolve()
 
 
 global ini

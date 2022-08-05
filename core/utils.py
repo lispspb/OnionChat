@@ -3,8 +3,13 @@ from signal import SIGTERM
 from base64 import b32decode
 import hashlib
 import binascii
+import shutil
+import ctypes
 
 from config import *
+
+
+global cached_data_dir
 
 
 def get_relative_path(path: str | pathlib.Path) -> str:
@@ -99,3 +104,81 @@ def is_valid_address(v3_address) -> bool:
         print(f'Incorrect onion checksum in address: {v3_address}')
         return False
     return True
+
+
+def get_data_dir():
+    global cached_data_dir
+
+    if is_portable():
+        return SCRIPT_DIR
+
+    if cached_data_dir:
+        return cached_data_dir
+
+    if is_windows():
+        CSIDL_APPDATA = 0x001a
+        buf = ctypes.create_unicode_buffer(256)
+        ctypes.windll.shell32.SHGetSpecialFolderPathW(None, buf, CSIDL_APPDATA, 0)
+        appdata = buf.value
+        data_dir = os.path.join(appdata, 'onionchat')
+    else:
+        home = os.path.expanduser('~')
+        data_dir = os.path.join(home, '.onionchat')
+
+    # test for optional profile name in command line
+    try:
+        data_dir += '_' + sys.argv[1]
+    except IndexError:
+        pass
+
+    # create it if necessary
+    if not os.path.exists(data_dir):
+        os.mkdir(data_dir)
+
+    # and create the folder 'Tor' with tor.exe and torrc.txt in it if necessary
+    data_dir_tor = os.path.join(data_dir, 'Tor')
+    if is_windows():
+        tor_exe = 'tor.exe'
+    else:
+        tor_exe = 'tor.sh'
+    if not os.path.exists(data_dir_tor):
+        os.mkdir(data_dir_tor)
+        shutil.copy(os.path.join('Tor', tor_exe), data_dir_tor)
+        shutil.copy(os.path.join('Tor', 'torrc.txt'), data_dir_tor)
+
+    # fix permissions
+    for filename in os.listdir(data_dir):
+        if os.path.isfile(filename):
+            # old log files still lying around in the data folder
+            os.chmod(os.path.join(data_dir, filename), 0o600)
+    os.chmod(data_dir, 0o700)
+    os.chmod(data_dir_tor, 0o700)
+    os.chmod(os.path.join(data_dir_tor, tor_exe), 0o700)
+    os.chmod(os.path.join(data_dir_tor, 'torrc.txt'), 0o600)
+
+    cached_data_dir = data_dir
+    return data_dir
+
+
+def split_line(line) -> tuple[str, str]:
+    """Split a line of text.
+
+    Splits a given line on the first space character and returns
+    two strings, the first word and the remaining string. This is
+    used for parsing the incoming messages from left to right since
+    the command and its arguments are all delimited by spaces and
+    the command may not contain spaces.
+
+    :param: Line.
+    :type: bool
+    :return: Tuple of two strings: first word of a line and the remaining string.
+    :rtype: tuple[str, str]
+    """
+    line = line.split(' ')
+    try:
+        a = line[0]
+        b = ' '.join(line[1:])
+    except IndexError:
+        a = line
+        b = ''
+    return a, b
